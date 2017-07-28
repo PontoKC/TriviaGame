@@ -2,17 +2,16 @@
   //Button will change the contents of the Jumbotron to the questions with form input.  
   //user will only be able to select one answer per question and will only have 1 minute to answer as many as possible.
   //Once the game ends, the jumbotron contents will change again to show the results of the quiz.
-  //User will reload page to try again -- could add a button that would let them restart.
+  //User will reload page to try again.
 
   var right = 0;
-  var wrong = 0;
 
 //////////////////////////
 ///////  TIMER    ////////
 //////////////////////////
 
-  	//set timer to 60 seconds
-    var number = 10;
+  	//set timer to 30 seconds
+    var number = 30;
     //  Variable that will hold our interval ID when we execute
     //  the "run" function
     var intervalId;
@@ -98,31 +97,38 @@
       choices: ["Sansa Stark", "Lysa Arryn", "Catelyn Stark", "Cersei Lannister"],
       answer: 2
     }
-    
      
   ];
-  
+
+
 function generateQuiz() {
 
   for ( var i = 0; i < questions.length; i++ ) {
    	//I KNOW THIS IS GARBAGE... IM NOT DELUSIONAL... COULDN'T FIGURE THIS OUT  
     $("#quiz").append("<h4>" + questions[i].question + "</h4>");
-    $("#quiz").append("<form><label class='radio-inline'><input type='radio' name='optradio'>" + questions[i].choices[0] + 
-    	"</label><label class='radio-inline'><input type='radio' name='optradio'>" + questions[i].choices[1] + 
-    	"</label><label class='radio-inline'><input type='radio' name='optradio'>" + questions[i].choices[2] + 
-    	"</label><label class='radio-inline'><input type='radio' name='optradio'>" + questions[i].choices[3] + 
+    $("#quiz").append("<form><label class='radio-inline'><input type='radio' name='optradio' value=0>" + questions[i].choices[0] + 
+    	"</label><label class='radio-inline'><input type='radio' name='optradio' value=1>" + questions[i].choices[1] + 
+    	"</label><label class='radio-inline'><input type='radio' name='optradio' value=2>" + questions[i].choices[2] + 
+    	"</label><label class='radio-inline'><input type='radio' name='optradio' value=3>" + questions[i].choices[3] + 
     	"</label></form><br>");
+
+	function checkAns() {
+		if ($("input[name=optradio]:checked").val() == questions[i].answer) {
+		right++;
+		};
+	};
+ 
+    checkAns();
+
  	}
-           
   }
-
-function checkAns() {
-  if ($("input[name=option]:checked").val() == allQuestions[currentquestion].correctAnswer) {
-    correctAnswers++;
-  };
-};
+	
+//THIS DOESN'T WORK -- WHAT I WANT TO DO IS CHECK THE ANSWERS AND VERIFY THAT THE VALUE OF THE BUTTON 
+//SELECTED MATCHES THE ANSWER PROPERTY OF THE QUESTION OBJECT    
 
 
+	     
+		// checkAns();
 
 
 //function that starts the game when the start button is clicked.
@@ -135,10 +141,7 @@ $("#startButton").click(function(){
 	$("#timer").html("<h2>Time Remaining: " + number + "</h2><br>");
 	generateQuiz();
 	timer();
-
-
-
-});
+	});
 
 });
 
